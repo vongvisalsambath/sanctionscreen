@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageId>SanctionScreen</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Vong Visalsambath</Authors>
+    <Description>Screen names against OFAC's public Specially Designated Nationals (SDN) list: fuzzy matching that copes with typos, word order, accents and company suffixes, and explains every hit. A screening aid, not a legal determination.</Description>
+    <PackageTags>sanctions;screening;ofac;sdn;aml;compliance;kyc;name-matching</PackageTags>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/vongvisalsambath/sanctionscreen</RepositoryUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="SanctionScreen.Tests" />
+  </ItemGroup>
+</Project>

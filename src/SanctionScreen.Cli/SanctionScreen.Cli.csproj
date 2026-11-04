@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <AssemblyName>SanctionScreen.Cli</AssemblyName>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>sanctionscreen</ToolCommandName>
+    <PackageId>SanctionScreen.Cli</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Vong Visalsambath</Authors>
+    <Description>Screen names against the OFAC SDN list from the command line, one at a time or a file at once.</Description>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/vongvisalsambath/sanctionscreen</RepositoryUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../SanctionScreen/SanctionScreen.csproj" />
+    <InternalsVisibleTo Include="SanctionScreen.Tests" />
+  </ItemGroup>
+</Project>

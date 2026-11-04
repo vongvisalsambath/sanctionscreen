@@ -1,0 +1,80 @@
+@page "/"
+@inject HttpClient Http
+
+<PageTitle>SanctionScreen · Screen a name against the OFAC SDN list</PageTitle>
+
+<section class="hero">
+  <h1>Is this name on the <span class="hl">sanctions list</span>?</h1>
+  <p class="lead">Check a person, company, ship or aircraft against the US Treasury's Specially Designated Nationals (SDN) list. Matching allows for typos, different spellings, word order, accents and company forms, and every possible match says why it was flagged.</p>
+</section>
+
+<div class="grid">
+  <section class="card inputs" aria-label="Name to screen">
+    <div class="field">
+      <label for="name">Name</label>
+      <input id="name" class="text" autocomplete="off" spellcheck="false" maxlength="300" @bind="name" @bind:event="oninput" @bind:after="Run" placeholder="e.g. Banco Nacional de Cuba" />
+    </div>
+    <div class="row2">
+      <label>Kind
+        <select @bind="type" @bind:after="Run">
+          <option value="">any</option>
+          <option value="individual">person</option>
+          <option value="entity">company or organisation</option>
+          <option value="vessel">ship</option>
+          <option value="aircraft">aircraft</option>
+        </select>
+      </label>
+      <label>Birth year (a person)
+        <input class="text" inputmode="numeric" maxlength="4" @bind="born" @bind:event="oninput" @bind:after="Run" placeholder="optional" />
+      </label>
+    </div>
+    <label>Country
+      <input class="text" maxlength="60" @bind="country" @bind:event="oninput" @bind:after="Run" placeholder="optional, e.g. KH or Cambodia" />
+    </label>
+    <label>How alike a name must be: @threshold.ToString("0.00", CultureInfo.InvariantCulture)
+      <input type="range" min="0.75" max="1" step="0.01" @bind="threshold" @bind:event="oninput" @bind:after="Run" />
+    </label>
+    <p class="hint">@status</p>
+  </section>
+
+  <section class="card results" aria-live="polite">
+    @if (screener is null)
+    {
+      <p class="hint">@(loadError ?? "Loading the list…")</p>
+    }
+    else if (string.IsNullOrWhiteSpace(name))
+    {
+      <p class="hint">Type a name to screen it.</p>
+    }
+    else if (hits.Count == 0)
+    {
+      <div class="verdict ok"><strong>No possible matches</strong><span>No listed name is at least @threshold.ToString("0.00", CultureInfo.InvariantCulture) alike. That isn't proof a party isn't sanctioned: it may be listed under a name this page can't relate to, or be owned by someone who is.</span></div>
+    }
+    else
+    {
+      <div class="verdict bad"><strong>@hits.Count possible match@(hits.Count == 1 ? "" : "es") to review</strong><span>A possible match isn't a finding. Compare the details (birth date, address, identifiers) with OFAC's own record before deciding anything.</span></div>
+      <ul class="lines">
+        @foreach (var h in hits)
+        {
+          <li class="question">
+            <span class="amt">@h.Score.ToString("0.00", CultureInfo.InvariantCulture)</span>
+            <span class="what"><b>@h.Entry.Name</b> · @Kind(h.Entry.Type) · entry @h.Entry.Id · @string.Join(" ", h.Entry.Programs)</span>
+            <span class="why-small">
+              @if (h.MatchedName.Kind != "primary") { <span>Matched its @h.MatchedName.Kind (@AliasKind(h.MatchedName.Kind)): <b>@h.MatchedName.Name</b>. </span> }
+              @string.Join("; ", h.Reasons).
+              @if (h.Entry.BirthYears.Count > 0) { <span> Born @string.Join(" or ", h.Entry.BirthYears).</span> }
+              @if (h.Entry.Countries.Count > 0) { <span> Listed with @string.Join(", ", h.Entry.Countries.Take(4)).</span> }
+            </span>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+</div>
+
+<section class="explain">
+  <h2>About this screen</h2>
+  <p>The list is OFAC's Specially Designated Nationals and Blocked Persons list, downloaded from the US Treasury when this page was built (@(screener?.List.Published is DateOnly p ? $"published {p:d MMMM yyyy}" : "date unknown")). OFAC changes it often, sometimes daily.</p>
+  <p>Names are compared word by word after removing accents, punctuation and company forms (Ltd, LLC, S.A.…), in any order, with similar words counting as matches (Jaro-Winkler similarity) and initials matching the words they stand for. A birth year or country that doesn't fit lowers the score.</p>
+  <p>This is a screening aid, not legal advice and not OFAC's own search. Other lists (the EU's, the UN's, the UK's) and ownership rules (an entity owned 50% or more by listed parties is blocked too) aren't covered.</p>
+</section>

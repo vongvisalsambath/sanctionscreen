@@ -1,0 +1,10 @@
+bin/
+obj/
+*.user
+.vs/
+node_modules/
+out/
+nupkg/
+*.nupkg
+lists/
+site/SanctionScreen.Web/wwwroot/data/
