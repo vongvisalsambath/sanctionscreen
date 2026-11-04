@@ -64,12 +64,12 @@ const squash = s => (s || "").replace(/\s+/g, " ").trim();
       text = await screen(p, "Banco Nacional de Cuba");
       check(text.includes("No possible matches"), "the kind filter excludes other kinds");
       await p.selectOption("select", "");
-      for (const hostile of ["<img src=x onerror=alert(1)>", "‮Banco Nacional de Cuba\u0000", "A".repeat(300), "😀".repeat(100)]) {
+      for (const hostile of ["<img src=x onerror=alert(1)>", "\u202EBanco Nacional de Cuba\u0000", "A".repeat(300), "😀".repeat(100)]) {
         await screen(p, hostile);
         const injected = await p.evaluate(() => document.querySelectorAll(".results img, .results script").length);
         check(injected === 0 && (await p.locator(".results").count()) === 1, "hostile name stays text: " + JSON.stringify(hostile.slice(0, 20)));
       }
-      text = await screen(p, "‮Banco Nacional de Cuba");
+      text = await screen(p, "\u202EBanco Nacional de Cuba");
       check(text.includes("BANCO NACIONAL DE CUBA"), "an invisible character doesn't hide a listed name");
       const issues = await done();
       check(issues.length === 0, "no errors, policy violations or outside requests", issues.join(" | "));
