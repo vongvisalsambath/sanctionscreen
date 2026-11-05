@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "curl -sSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh && bash /tmp/dotnet-install.sh --channel 10.0 --install-dir /tmp/dotnet",
-  "buildCommand": "/tmp/dotnet/dotnet run --project src/SanctionScreen.Cli -c Release -f net10.0 -- update --lists lists && mkdir -p site/SanctionScreen.Web/wwwroot/data && /tmp/dotnet/dotnet run --project src/SanctionScreen.Cli -c Release -f net10.0 -- export --lists lists --out site/SanctionScreen.Web/wwwroot/data/list.json && /tmp/dotnet/dotnet publish site/SanctionScreen.Web -c Release -o out",
+  "buildCommand": "bash scripts/vercel-build.sh",
   "outputDirectory": "out/wwwroot",
   "framework": null,
   "headers": [
