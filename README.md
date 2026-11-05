@@ -24,6 +24,15 @@ $ sanctionscreen check "Banko Nasional de Cuba"
 
 **A screening aid, not a legal determination.** A possible match needs a person to compare the details: birth date, address, identifiers. No match doesn't prove a party isn't sanctioned: it may be listed under a name this matcher can't relate to, or be owned by a listed party. Only OFAC's SDN list is covered. The EU, UN and UK lists, and OFAC's other lists, aren't.
 
+## Install
+
+On NuGet: [SanctionScreen](https://www.nuget.org/packages/SanctionScreen) · [SanctionScreen.Cli](https://www.nuget.org/packages/SanctionScreen.Cli). For .NET 8 and .NET 10.
+
+```sh
+dotnet add package SanctionScreen
+dotnet tool install --global SanctionScreen.Cli   # the `sanctionscreen` command
+```
+
 ## Library
 
 ```csharp
