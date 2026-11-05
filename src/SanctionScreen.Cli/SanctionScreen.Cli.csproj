@@ -6,6 +6,8 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>sanctionscreen</ToolCommandName>
     <PackageId>SanctionScreen.Cli</PackageId>
+    <PackageProjectUrl>https://sanctionscreen.vercel.app</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <Version>0.1.0</Version>
     <Authors>Vong Visalsambath</Authors>
     <Description>Screen names against the OFAC SDN list from the command line, one at a time or a file at once.</Description>
@@ -15,5 +17,8 @@
   <ItemGroup>
     <ProjectReference Include="../SanctionScreen/SanctionScreen.csproj" />
     <InternalsVisibleTo Include="SanctionScreen.Tests" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="/" />
   </ItemGroup>
 </Project>
