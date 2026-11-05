@@ -1,5 +1,7 @@
 # SanctionScreen
 
+**Website: [sanctionscreen.vercel.app](https://sanctionscreen.vercel.app)** · runs in your browser; nothing is uploaded.
+
 Screen a person, company, ship or aircraft against the US Treasury's **Specially Designated Nationals (SDN) list**. Matching copes with:
 - typos and other spellings;
 - word order;
